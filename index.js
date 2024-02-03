@@ -2,7 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 require('dotenv').config()
 const User = require("./src/Models/User")
-const { register, login, findUser } = require("./src/Controllers/Users")
+const { register, login, findUser, updateUser} = require("./src/Controllers/Users")
 
 const http = require("http")
 const {Server} = require("socket.io")
@@ -34,6 +34,11 @@ server.get("/", (req, res) => {
 server.post("/register", register,sendEmail)
 server.post("/login", login)
 server.post("/addForm",validateForm,isValidated,addForm)
+server.put("/update-user",verifyToken,updateUser);
+server.get("/get-product/:id",(req,res)=>{
+   res.send(req.params.id)
+})
+
 
 server.get("/get-User",verifyToken,findUser)
 
@@ -55,6 +60,7 @@ app.listen(port, () => {
     console.log("Server Started")
 })
 const mongodb =process.env.MONGODB_url
-mongoose.connect(mongodb)
+mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASS}@cluster0.ahbd6j6.mongodb.net/?retryWrites=true&w=majority
+`)
     .then(data => console.log("Database Connected"))
     .catch(error => console.log(error))

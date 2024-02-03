@@ -59,3 +59,14 @@ exports.findUser = async (req, res) => {
   const user = await User.findById(req.id)
   return res.status(200).json({ user })
 }
+
+exports.updateUser = async (req,res) =>{
+  try {
+    const newData = req.body;
+    const updatedUser = await User.findByIdAndUpdate(req.id,newData)
+    return res.status(200).json({updatedUser})
+  } catch (e) {
+    return res.status(404).json({message:"User Not Found"})
+    
+  }
+}
